@@ -1,0 +1,36 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "content": [
+    {
+      "id": "abcd0123efgh456",
+      "title": "콘텐츠 타이틀",
+      "likes": 1
+    },
+    {
+      "id": "123efgh456abcd0",
+      "title": "콘텐츠 타이틀",
+      "likes": 3
+    },
+    {
+      "id": "gh456abcd0123ef",
+      "title": "콘텐츠 타이틀",
+      "likes": 0
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
