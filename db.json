@@ -1,36 +1,70 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
   "content": [
     {
       "id": "abcd0123efgh456",
       "title": "콘텐츠 타이틀",
-      "likes": 1
+      "likes": 3,
+      "content": "dfdfdfdfd"
     },
     {
       "id": "123efgh456abcd0",
       "title": "콘텐츠 타이틀",
-      "likes": 3
+      "likes": 3,
+      "content": "dfdfdfdfd"
     },
     {
-      "id": "gh456abcd0123ef",
+      "id": "gh456abcd3ef",
       "title": "콘텐츠 타이틀",
-      "likes": 0
-    }
-  ],
-  "comments": [
+      "likes": 0,
+      "content": "dfdfdfdfd"
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "id": "123efgbcd0",
+      "title": "콘텐츠 타이틀",
+      "likes": 3,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "gh45623ef",
+      "title": "콘텐츠 타이틀",
+      "likes": 0,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "123e456abcd0",
+      "title": "콘텐츠 타이틀",
+      "likes": 3,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "ghef",
+      "title": "콘텐츠 타이틀",
+      "likes": 0,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "12fgh456abcd0",
+      "title": "콘텐츠 타이틀",
+      "likes": 3,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "gh4d0123ef",
+      "title": "콘텐츠 타이틀",
+      "likes": 0,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "6abcd0",
+      "title": "콘텐츠 타이틀",
+      "likes": 3,
+      "content": "dfdfdfdfd"
+    },
+    {
+      "id": "gh456abcd0123ghgg",
+      "title": "콘텐츠 타이틀",
+      "likes": 0,
+      "content": "dfdfdfdfd"
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
