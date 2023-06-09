@@ -7,20 +7,25 @@ import { InContent } from "@/Interface/content";
 
 export default function Home() {
   const [content, setContent] = useState<InContent[]>([]);
+  /* 현재 타겟팅 되는 아이템의 likes를 확인해보자 */
+  const [likes, setLikes] = useState(0);
 
   const router = useRouter();
   console.log(router);
 
+  useEffect(() => {
+    getApi();
+  }, []);
+
   const routeDetail = (id: string) => {
     router.push({
-      pathname: `/details/${id}`,
-      query: {
-        contentId: id,
-      },
+      pathname: `/detail/${id}`,
     });
   };
 
-  /* get the contents */
+  /* get the contents 
+  likes 요소가 변경 될때마다, rerendering => 의존성 배열
+  */
   const getApi = async () => {
     try {
       const res = await axios.get("http://localhost:3001/content");
@@ -32,6 +37,7 @@ export default function Home() {
     }
   };
 
+  /* 아이템이 찍히는지 확인 */
   const testApi = async (contentId: string) => {
     try {
       const res = await axios.get(`http://localhost:3001/content/${contentId}`);
@@ -42,23 +48,23 @@ export default function Home() {
     }
   };
 
+  /* :contentId/like 로 post를 활용하여 likes를 증가 => 즉, 백엔드 like 라우터가 { id } 로 엮여있고,
+  백엔드의 로직 상으로 해당 라우터에 요청이 가해지면 +1이 되도록 설계 
+  에측된 바로는 params로 넘기면 body로 payload 값을 보내지 않아도 요청이 온다면 likes에 계속해서 증가되도록 설계가 되어 있을듯
+  */
   const postLike = async (contentId: string) => {
-    const res = await axios.post(
-      `http://localhost:3001/content/${contentId}/likes`,
-      {
-        likes: 1,
-      }
-    );
-    console.log(res.data);
+    axios
+      .post(`http://localhost:3001/content/${contentId}/likes`)
+      .then((res) => {
+        /* like 값을 받음 */
+        setLikes(res.data);
+        console.log(likes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  /* const likeHandler = async (payload: any) => {
-    const like = await axios.post(`http://localhost:3001/content/${contentId}/like`, payload.likes );
-  }; */
-
-  useEffect(() => {
-    getApi();
-  }, []);
   return (
     <MainContainer>
       <MainTitle>인기 급상승 컨텐츠</MainTitle>
@@ -66,14 +72,14 @@ export default function Home() {
         {/* // 콘텐츠 타이틀, 좋아요 버튼, 좋아요 */}
         {content?.map((item) => (
           <Item key={item.id} onClick={() => routeDetail(item.id)}>
-            <div>
+            <Info>
               <ContentTitle>{item.title}</ContentTitle>
               <TotalLike>♥️ {item.likes}</TotalLike>
-            </div>
+            </Info>
             <LikeBtn
               onClick={(e) => {
                 e.stopPropagation();
-                testApi(item.id);
+                postLike(item.id);
               }}>
               🥰
             </LikeBtn>
@@ -106,16 +112,26 @@ const ItemContainer = styled.div`
 const Item = styled.div`
   width: 90%;
   height: 200px;
+  padding: 10px;
   margin-top: 10px;
   border-radius: 25px;
   background-color: #cdcdcc;
   position: relative;
 `;
 
+const Info = styled.section`
+  width: 100%;
+  height: 30%;
+  bottom: 0;
+  background-color: transparent;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+`;
+
 const ContentTitle = styled.h3`
-  margin-top: 40%;
-  margin-left: 20px;
-  position: absolute;
+  /* margin-top: 40%;
+  margin-left: 20px; */
 `;
 
 const TotalLike = styled.div``;

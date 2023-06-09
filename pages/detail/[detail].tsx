@@ -8,6 +8,7 @@ import { InContent } from "@/Interface/content";
 
 function detail() {
   const [list, setList] = useState<InContent>();
+  const [likes, setLikes] = useState(0);
 
   const router = useRouter();
   const contentId = router.query;
@@ -24,9 +25,31 @@ function detail() {
     }
   };
 
-  useEffect(() => {
+  const testApi = async (contentId: string) => {
+    try {
+      const res = await axios.get(`http://localhost:3001/content/${contentId}`);
+      const data2 = res.data;
+      console.log(data2);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const postLike = async (contentId: string) => {
+    axios
+      .post(`http://localhost:3001/content/${contentId}/likes`)
+      .then((res) => {
+        /* like 값을 받음 */
+        setLikes(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /* useEffect(() => {
     getApi();
-  }, []);
+  }, []); */
 
   return (
     <Thumbnail>
@@ -34,6 +57,13 @@ function detail() {
       {/* <h2>{list.title}</h2>
       <h3>{list.content}</h3> */}
       <LikeBox>dd</LikeBox>
+      <LikeBtn
+        onClick={(e) => {
+          e.stopPropagation();
+          //testApi(item.id);
+        }}>
+        🥰
+      </LikeBtn>
     </Thumbnail>
   );
 }
@@ -58,13 +88,13 @@ const LikeBox = styled.div`
   height: 50px;
 
   float: right;
+`;
 
-  button {
-    width: 50px;
-    height: 50px;
-    font-size: ${(props) => props.theme.pixelToRem(30)};
-    background-color: #efd666;
-    float: right;
-    display: flex;
-  }
+const LikeBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  font-size: ${(props) => props.theme.pixelToRem(30)};
+  background-color: #efd666;
+  float: right;
+  display: flex;
 `;
