@@ -7,6 +7,7 @@ import { InContent } from "@/Interface/content";
 
 export default function Home() {
   const [content, setContent] = useState<InContent[]>([]);
+
   /* 현재 타겟팅 되는 아이템의 likes를 확인해보자 */
   const [likes, setLikes] = useState(0);
 
@@ -15,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     getApi();
-  }, []);
+  }, [likes]);
 
   const routeDetail = (id: string) => {
     router.push({
@@ -71,15 +72,15 @@ export default function Home() {
       <ItemContainer>
         {/* // 콘텐츠 타이틀, 좋아요 버튼, 좋아요 */}
         {content?.map((item) => (
-          <Item key={item.id} onClick={() => routeDetail(item.id)}>
+          <Item key={item?.id} onClick={() => routeDetail(item.id)}>
             <Info>
-              <ContentTitle>{item.title}</ContentTitle>
-              <TotalLike>♥️ {item.likes}</TotalLike>
+              <ContentTitle>{item?.title}</ContentTitle>
+              <TotalLike>♥️ {item?.likes}</TotalLike>
             </Info>
             <LikeBtn
               onClick={(e) => {
                 e.stopPropagation();
-                postLike(item.id);
+                postLike(item?.id);
               }}>
               🥰
             </LikeBtn>

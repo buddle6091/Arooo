@@ -1,45 +1,41 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import axios from "axios";
 import styled from "styled-components";
-
 import { useRouter } from "next/router";
-import { InContent } from "@/Interface/content";
+import { InDetail, InRouter } from "@/Interface/content";
 
 function detail() {
-  const [list, setList] = useState<InContent>();
+  const [content, setContent] = useState<InDetail>();
   const [likes, setLikes] = useState(0);
 
   const router = useRouter();
-  const contentId = router.query;
-  console.log(contentId);
+  console.log(router.query.detail);
 
   const getApi = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/content/${contentId}`);
+      const res = await axios.get(
+        `http://localhost:3001/content/${router.query.detail}`
+      );
       const data = res.data;
-      setList(data);
+      setContent(data);
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const testApi = async (contentId: string) => {
-    try {
-      const res = await axios.get(`http://localhost:3001/content/${contentId}`);
-      const data2 = res.data;
-      console.log(data2);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  /* 새로고침하면 상태를 초기화하여, params 값까지 소실. => useEffect에서 router값이 변경,
+  즉 페이지가 로드되어 routing 됨을 인지하면 다시 params값을 받아와서 get 호출
+    */
+  useEffect(() => {
+    getApi();
+  }, [router, likes]);
 
-  const postLike = async (contentId: string) => {
+  const postLike = async () => {
     axios
-      .post(`http://localhost:3001/content/${contentId}/likes`)
+      .post(`http://localhost:3001/content/${router.query.detail}/likes`)
       .then((res) => {
-        /* like 값을 받음 */
+        /* like 값을 받음 -> 최신화를 인지하기 위한 상태관리 */
         setLikes(res.data);
       })
       .catch((err) => {
@@ -47,20 +43,18 @@ function detail() {
       });
   };
 
-  /* useEffect(() => {
-    getApi();
-  }, []); */
-
   return (
     <Thumbnail>
       {/* 콘텐츠 타이틀, 콘텐츠 본문, 좋아요 버튼, 좋아요 수 */}
-      {/* <h2>{list.title}</h2>
-      <h3>{list.content}</h3> */}
-      <LikeBox>dd</LikeBox>
+
+      <ContentTitle>{content?.title}</ContentTitle>
+      <Info>
+        <ContentMain>{content?.content}</ContentMain>
+        <TotalLike>♥️{content?.likes}</TotalLike>
+      </Info>
       <LikeBtn
-        onClick={(e) => {
-          e.stopPropagation();
-          //testApi(item.id);
+        onClick={() => {
+          postLike();
         }}>
         🥰
       </LikeBtn>
@@ -73,6 +67,7 @@ export default detail;
 const Thumbnail = styled.div`
   width: 100%;
   height: 65vh;
+  padding: 10px;
   background-color: #ffcccc;
   border-radius: 0px 0px 25px 25px;
 
@@ -89,6 +84,25 @@ const LikeBox = styled.div`
 
   float: right;
 `;
+
+const Info = styled.section`
+  width: 100%;
+  height: 30%;
+  bottom: 0;
+  background-color: transparent;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+`;
+
+const ContentTitle = styled.h2`
+  /* margin-top: 40%;
+  margin-left: 20px; */
+`;
+
+const ContentMain = styled.div``;
+
+const TotalLike = styled.div``;
 
 const LikeBtn = styled.button`
   width: 50px;
