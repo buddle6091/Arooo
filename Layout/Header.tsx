@@ -14,7 +14,7 @@ function Header() {
 
 export default Header;
 
-const Head = styled.div`
+const Head = styled.header`
   width: 100%;
   height: 5vh;
   background-color: #cccccc;

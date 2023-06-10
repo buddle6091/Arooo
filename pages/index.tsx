@@ -1,4 +1,4 @@
-import { useState, useEffect, MouseEventHandler } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import axios from "axios";
@@ -29,21 +29,10 @@ export default function Home() {
   */
   const getApi = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/content");
+      const res = await axios.get("https://api.a.com/library/content");
       const data = res.data;
       console.log(data);
       setContent(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  /* 아이템이 찍히는지 확인 */
-  const testApi = async (contentId: string) => {
-    try {
-      const res = await axios.get(`http://localhost:3001/content/${contentId}`);
-      const data2 = res.data;
-      console.log(data2);
     } catch (err) {
       console.log(err);
     }
@@ -55,7 +44,7 @@ export default function Home() {
   */
   const postLike = async (contentId: string) => {
     axios
-      .post(`http://localhost:3001/content/${contentId}/likes`)
+      .post(`https://api.a.com/library/content/${contentId}/like`)
       .then((res) => {
         /* like 값을 받음 */
         setLikes(res.data);
@@ -91,7 +80,7 @@ export default function Home() {
   );
 }
 
-const MainContainer = styled.div`
+const MainContainer = styled.main`
   width: 100%;
   height: auto;
   margin-top: 10px;
@@ -135,7 +124,7 @@ const ContentTitle = styled.h3`
   margin-left: 20px; */
 `;
 
-const TotalLike = styled.div``;
+const TotalLike = styled.p``;
 
 const LikeBtn = styled.button`
   width: 50px;
